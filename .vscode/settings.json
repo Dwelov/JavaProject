@@ -1,0 +1,5 @@
+{
+    "java.configuration.updateBuildConfiguration": "interactive",
+    "css.validate": false,
+    "css.lint.vendorPrefix": "ignore"
+}
