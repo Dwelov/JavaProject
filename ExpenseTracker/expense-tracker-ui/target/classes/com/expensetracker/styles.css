@@ -301,3 +301,173 @@
     -fx-padding: 10 14 10 14;
     -fx-max-width: Infinity;
 }
+
+/* ── DASHBOARD LAYOUT ── */
+.sidebar {
+    -fx-background-color: rgba(18, 22, 32, 0.6);
+    -fx-border-color: transparent rgba(255, 255, 255, 0.05) transparent transparent;
+    -fx-border-width: 1;
+}
+
+.main-scroll-pane {
+    -fx-background-color: transparent;
+    -fx-background: transparent;
+}
+.main-scroll-pane .viewport {
+    -fx-background-color: transparent;
+}
+
+.main-content {
+    -fx-background-color: transparent;
+}
+
+/* ── SIDEBAR ELEMENTS ── */
+.logo-container-small {
+    -fx-background-color: rgba(0, 230, 118, 0.12);
+    -fx-background-radius: 12;
+    -fx-border-color: rgba(0, 230, 118, 0.25);
+    -fx-border-radius: 12;
+    -fx-min-width: 36; -fx-max-width: 36;
+    -fx-min-height: 36; -fx-max-height: 36;
+}
+
+.logo-icon-small {
+    -fx-text-fill: #00e676;
+    -fx-font-size: 18px;
+}
+
+.brand-title-small {
+    -fx-text-fill: #ffffff;
+    -fx-font-family: "Georgia";
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+}
+
+.nav-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: rgba(200, 215, 210, 0.7);
+    -fx-font-family: "Trebuchet MS";
+    -fx-font-size: 14px;
+    -fx-padding: 12 16 12 16;
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+}
+
+.nav-button:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.05);
+    -fx-text-fill: #ffffff;
+}
+
+.nav-button-active {
+    -fx-background-color: rgba(0, 230, 118, 0.1);
+    -fx-text-fill: #00e676;
+    -fx-font-weight: bold;
+}
+
+.user-profile-card {
+    -fx-background-color: rgba(255, 255, 255, 0.03);
+    -fx-background-radius: 12;
+    -fx-padding: 16;
+}
+
+.user-name {
+    -fx-text-fill: #ffffff;
+    -fx-font-family: "Trebuchet MS";
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+.user-plan {
+    -fx-text-fill: #8ca59b;
+    -fx-font-family: "Trebuchet MS";
+    -fx-font-size: 12px;
+}
+
+.logout-button {
+    -fx-background-color: rgba(255, 83, 112, 0.1);
+    -fx-text-fill: #ff5370;
+    -fx-font-family: "Trebuchet MS";
+    -fx-font-weight: bold;
+    -fx-background-radius: 6;
+    -fx-cursor: hand;
+}
+.logout-button:hover {
+    -fx-background-color: rgba(255, 83, 112, 0.2);
+}
+
+/* ── MAIN DASHBOARD ELEMENTS ── */
+.page-title {
+    -fx-text-fill: #ffffff;
+    -fx-font-family: "Georgia";
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+}
+
+.page-subtitle {
+    -fx-text-fill: #8ca59b;
+    -fx-font-family: "Trebuchet MS";
+    -fx-font-size: 14px;
+}
+
+.dashboard-card {
+    -fx-background-color: rgba(18, 22, 32, 0.8);
+    -fx-background-radius: 16;
+    -fx-border-color: rgba(255, 255, 255, 0.05);
+    -fx-border-radius: 16;
+    -fx-padding: 24;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 15, 0, 0, 4);
+}
+
+.card-title, .section-title {
+    -fx-text-fill: #8ca59b;
+    -fx-font-family: "Trebuchet MS";
+    -fx-font-size: 14px;
+}
+
+.section-title {
+    -fx-font-size: 16px;
+    -fx-text-fill: #ffffff;
+    -fx-font-weight: bold;
+}
+
+.card-value-primary {
+    -fx-text-fill: #ffffff;
+    -fx-font-family: "Georgia";
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+}
+
+.card-value-success {
+    -fx-text-fill: #00e676;
+    -fx-font-family: "Georgia";
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+}
+
+.card-value-danger {
+    -fx-text-fill: #ff5370;
+    -fx-font-family: "Georgia";
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+}
+
+.see-all-link {
+    -fx-text-fill: #00e676;
+    -fx-font-family: "Trebuchet MS";
+    -fx-font-size: 12px;
+    -fx-border-color: transparent;
+}
+
+/* ── CHARTS STYLING ── */
+.chart-bar {
+    -fx-bar-fill: #00e676;
+}
+.chart-plot-background {
+    -fx-background-color: transparent;
+}
+.chart-vertical-grid-lines {
+    -fx-stroke: transparent;
+}
+.chart-horizontal-grid-lines {
+    -fx-stroke: rgba(255,255,255,0.05);
+}

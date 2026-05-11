@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.chart.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.expensetracker.DashboardController"
+            prefWidth="1200" prefHeight="800"
+            styleClass="root-pane">
+
+    <left>
+        <VBox styleClass="sidebar" prefWidth="260" spacing="30">
+            <padding><Insets top="40" right="20" bottom="40" left="20"/></padding>
+            
+            <HBox alignment="CENTER_LEFT" spacing="12">
+                <StackPane styleClass="logo-container-small">
+                    <Label text="⬡" styleClass="logo-icon-small"/>
+                </StackPane>
+                <Label text="FinanceOS" styleClass="brand-title-small"/>
+            </HBox>
+
+            <Region prefHeight="20"/>
+
+            <VBox spacing="10">
+                <Button text="Dashboard" styleClass="nav-button, nav-button-active" maxWidth="Infinity" alignment="BASELINE_LEFT"/>
+                <Button text="Transactions" styleClass="nav-button" maxWidth="Infinity" alignment="BASELINE_LEFT"/>
+                <Button text="Categories" styleClass="nav-button" maxWidth="Infinity" alignment="BASELINE_LEFT"/>
+                <Button text="Analytics" styleClass="nav-button" maxWidth="Infinity" alignment="BASELINE_LEFT"/>
+            </VBox>
+
+            <Region VBox.vgrow="ALWAYS"/>
+
+            <VBox spacing="10" styleClass="user-profile-card">
+                <Label text="Rahib" styleClass="user-name"/>
+                <Label text="Free Plan" styleClass="user-plan"/>
+                <Button text="Log Out" styleClass="logout-button" maxWidth="Infinity" onAction="#handleLogout"/>
+            </VBox>
+        </VBox>
+    </left>
+
+    <center>
+        <ScrollPane fitToWidth="true" styleClass="main-scroll-pane">
+            <VBox spacing="30" styleClass="main-content">
+                <padding><Insets top="40" right="40" bottom="40" left="40"/></padding>
+
+                <HBox alignment="CENTER_LEFT">
+                    <VBox spacing="5">
+                        <Label text="My Dashboard" styleClass="page-title"/>
+                        <Label text="Welcome back, here is your financial overview." styleClass="page-subtitle"/>
+                    </VBox>
+                    <Region HBox.hgrow="ALWAYS"/>
+                    <ComboBox fx:id="monthSelector" styleClass="combo-box-custom" promptText="May 2026"/>
+                </HBox>
+
+                <HBox spacing="20">
+                    <VBox styleClass="dashboard-card" HBox.hgrow="ALWAYS" spacing="10">
+                        <Label text="Total Balance" styleClass="card-title"/>
+                        <Label text="Rs 145,000" styleClass="card-value-primary"/>
+                    </VBox>
+                    <VBox styleClass="dashboard-card" HBox.hgrow="ALWAYS" spacing="10">
+                        <Label text="Total Income" styleClass="card-title"/>
+                        <Label text="+Rs 180,000" styleClass="card-value-success"/>
+                    </VBox>
+                    <VBox styleClass="dashboard-card" HBox.hgrow="ALWAYS" spacing="10">
+                        <Label text="Total Expense" styleClass="card-title"/>
+                        <Label text="-Rs 35,000" styleClass="card-value-danger"/>
+                    </VBox>
+                </HBox>
+
+                <HBox spacing="20">
+                    <VBox styleClass="dashboard-card" HBox.hgrow="ALWAYS" spacing="15" prefWidth="600">
+                        <Label text="Statistics" styleClass="section-title"/>
+                        <BarChart fx:id="statisticsChart" legendVisible="false" verticalGridLinesVisible="false">
+                            <xAxis>
+                                <CategoryAxis fx:id="xAxis" tickLabelFill="#8ca59b"/>
+                            </xAxis>
+                            <yAxis>
+                                <NumberAxis tickLabelFill="#8ca59b"/>
+                            </yAxis>
+                        </BarChart>
+                    </VBox>
+
+                    <VBox styleClass="dashboard-card" prefWidth="350" spacing="15">
+                        <HBox alignment="CENTER_LEFT">
+                            <Label text="Recent Transactions" styleClass="section-title"/>
+                            <Region HBox.hgrow="ALWAYS"/>
+                            <Hyperlink text="See All" styleClass="see-all-link"/>
+                        </HBox>
+                        
+                        <VBox fx:id="transactionsList" spacing="12">
+                            </VBox>
+                    </VBox>
+                </HBox>
+
+            </VBox>
+        </ScrollPane>
+    </center>
+
+</BorderPane>

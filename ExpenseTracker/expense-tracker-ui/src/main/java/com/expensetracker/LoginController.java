@@ -72,10 +72,15 @@ public class LoginController implements Initializable {
         loginButton.setText("Signing in…");
 
         
-        if (validateCredentials(email, password)) {
-            hideError();
-            navigateToDashboard();
-        } else {
+        // if (validateCredentials(email, password)) {
+        //     hideError();
+        //     navigateToDashboard();
+        // } dummy credentials for the checking of the code
+        if (email.equals("admin@financeos.com") && password.equals("password123")) {
+        hideError();
+        navigateToDashboard(); // Call your method that loads dashboard.fxml
+    }
+        else {
             showError("Incorrect email or password. Please try again.");
             shakeField(passwordField);
             passwordField.clear();
@@ -101,6 +106,7 @@ public class LoginController implements Initializable {
     // ── Helpers ────────────────────────────────────────────────────────────────
 
     /** Stub — replace with your UserRepository / AuthService call. */
+    @SuppressWarnings("unused")
     private boolean validateCredentials(String email, String password) {
         // Example stub: accept admin / password
         return "admin@example.com".equalsIgnoreCase(email) && "password".equals(password);
@@ -108,7 +114,7 @@ public class LoginController implements Initializable {
 
     private void navigateToDashboard() {
         try {
-            App.setRoot("signup");
+            App.setRoot("dashboard");
         } catch (IOException e) {
             showError("Navigation error: " + e.getMessage());
         }
