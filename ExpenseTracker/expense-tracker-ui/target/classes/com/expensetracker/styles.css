@@ -471,3 +471,68 @@
 .chart-horizontal-grid-lines {
     -fx-stroke: rgba(255,255,255,0.05);
 }
+
+/* ── TABLE HEADER ROW (Transactions page) ── */
+.table-header-row {
+    -fx-background-color: rgba(255,255,255,0.03);
+    -fx-background-radius: 10 10 0 0;
+}
+
+.table-header-cell {
+    -fx-text-fill: #8ca59b;
+    -fx-font-family: "Trebuchet MS";
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+}
+
+/* ── COMBO BOX ── */
+.combo-box-custom,
+.combo-box-custom .list-cell {
+    -fx-background-color: rgba(255,255,255,0.05);
+    -fx-background-radius: 10;
+    -fx-border-color: rgba(255,255,255,0.10);
+    -fx-border-radius: 10;
+    -fx-text-fill: #e8f5f0;
+    -fx-prompt-text-fill: rgba(140,165,155,0.50);
+    -fx-font-family: "Trebuchet MS";
+    -fx-font-size: 13px;
+    -fx-pref-height: 40;
+}
+
+.combo-box-custom .arrow-button {
+    -fx-background-color: transparent;
+}
+
+.combo-box-custom .arrow {
+    -fx-background-color: #8ca59b;
+}
+
+.combo-box-custom:focused {
+    -fx-border-color: #00e676;
+}
+
+/* ── PIE CHART ── */
+.chart-pie-label {
+    -fx-fill: #8ca59b;
+    -fx-font-family: "Trebuchet MS";
+    -fx-font-size: 11px;
+}
+
+.chart-pie-label-line {
+    -fx-stroke: rgba(255,255,255,0.20);
+}
+
+.chart-legend {
+    -fx-background-color: transparent;
+}
+
+.chart-legend-item {
+    -fx-text-fill: #8ca59b;
+    -fx-font-family: "Trebuchet MS";
+    -fx-font-size: 12px;
+}
+
+/* ── FLOW PANE (Categories grid) ── */
+.flow-pane-categories {
+    -fx-background-color: transparent;
+}

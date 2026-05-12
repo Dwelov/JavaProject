@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.expensetracker.CategoriesController"
+            prefWidth="1100" prefHeight="700"
+            styleClass="root-pane">
+
+    <!-- ═══════════════  SIDEBAR  ═══════════════ -->
+    <left>
+        <VBox styleClass="sidebar" prefWidth="240" spacing="30">
+            <padding><Insets top="40" right="20" bottom="40" left="20"/></padding>
+
+            <HBox alignment="CENTER_LEFT" spacing="12">
+                <StackPane styleClass="logo-container-small">
+                    <Label text="⬡" styleClass="logo-icon-small"/>
+                </StackPane>
+                <Label text="FinanceOS" styleClass="brand-title-small"/>
+            </HBox>
+
+            <Region prefHeight="20"/>
+
+            <VBox spacing="10">
+                <Button text="🏠  Dashboard"   styleClass="nav-button"        maxWidth="Infinity" alignment="BASELINE_LEFT" onAction="#handleNavDashboard"/>
+                <Button text="↕  Transactions" styleClass="nav-button"        maxWidth="Infinity" alignment="BASELINE_LEFT" onAction="#handleNavTransactions"/>
+                <Button text="🏷  Categories"  styleClass="nav-button, nav-button-active" maxWidth="Infinity" alignment="BASELINE_LEFT"/>
+                <Button text="📊  Analytics"   styleClass="nav-button"        maxWidth="Infinity" alignment="BASELINE_LEFT" onAction="#handleNavAnalytics"/>
+            </VBox>
+
+            <Region VBox.vgrow="ALWAYS"/>
+
+            <VBox spacing="10" styleClass="user-profile-card">
+                <Label text="Rahib" styleClass="user-name"/>
+                <Label text="Free Plan" styleClass="user-plan"/>
+                <Button text="Log Out" styleClass="logout-button" maxWidth="Infinity" onAction="#handleLogout"/>
+            </VBox>
+        </VBox>
+    </left>
+
+    <!-- ═══════════════  MAIN CONTENT  ═══════════════ -->
+    <center>
+        <ScrollPane fitToWidth="true" styleClass="main-scroll-pane">
+            <VBox spacing="28" styleClass="main-content">
+                <padding><Insets top="40" right="40" bottom="40" left="40"/></padding>
+
+                <!-- Page header -->
+                <HBox alignment="CENTER_LEFT">
+                    <VBox spacing="4">
+                        <Label text="Categories" styleClass="page-title"/>
+                        <Label text="Overview of all spending categories and their totals." styleClass="page-subtitle"/>
+                    </VBox>
+                    <Region HBox.hgrow="ALWAYS"/>
+                    <Button text="+ Add Category" styleClass="primary-button" onAction="#handleAddCategory"/>
+                </HBox>
+
+                <!-- Category cards grid -->
+                <FlowPane fx:id="categoryGrid" hgap="20" vgap="20"
+                          prefWrapLength="820"/>
+
+                <!-- Per-category transaction list -->
+                <VBox styleClass="dashboard-card" spacing="14">
+                    <HBox alignment="CENTER_LEFT">
+                        <Label fx:id="selectedCategoryTitle" text="Select a category to see transactions"
+                               styleClass="section-title"/>
+                        <Region HBox.hgrow="ALWAYS"/>
+                        <Label fx:id="selectedCategoryTotal" text="" styleClass="card-value-danger"/>
+                    </HBox>
+                    <Separator style="-fx-background-color: rgba(255,255,255,0.06);"/>
+                    <VBox fx:id="categoryTransactionsList" spacing="8"/>
+                    <Label fx:id="noCatTransLabel" text="Click a category card above to view its transactions."
+                           styleClass="page-subtitle"
+                           style="-fx-padding: 16 0 0 0;"/>
+                </VBox>
+
+            </VBox>
+        </ScrollPane>
+    </center>
+
+</BorderPane>
