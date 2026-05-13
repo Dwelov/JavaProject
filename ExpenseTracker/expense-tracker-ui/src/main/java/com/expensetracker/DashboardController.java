@@ -1,10 +1,7 @@
 package com.expensetracker;
 
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.XYChart;
@@ -16,7 +13,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
@@ -136,23 +132,10 @@ public class DashboardController implements Initializable {
 
     private void navigateTo(String fxml) {
         try {
-            FXMLLoader loader = new FXMLLoader(
-                getClass().getResource("/com/expensetracker/" + fxml + ".fxml"));
-            Parent root = loader.load();
-            Stage stage = (Stage) monthSelector.getScene().getWindow();
-            Scene newScene = new Scene(root);
-            applyCss(newScene);
-            stage.setScene(newScene);
+            App.setRoot(fxml);
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    private void applyCss(Scene scene) {
-        try {
-            var css = getClass().getResource("/com/expensetracker/styles.css");
-            if (css != null) scene.getStylesheets().add(css.toExternalForm());
-        } catch (Exception ignored) { }
     }
 
     // ── Utility ───────────────────────────────────────────────────────────────

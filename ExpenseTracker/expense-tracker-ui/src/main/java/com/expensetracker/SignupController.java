@@ -3,13 +3,9 @@ package com.expensetracker;
 import javafx.animation.FadeTransition;
 import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.Region;
-import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.IOException;
@@ -119,7 +115,7 @@ public class SignupController implements Initializable {
             // Brief pause then navigate
             javafx.animation.PauseTransition pause =
                     new javafx.animation.PauseTransition(Duration.seconds(1.4));
-            pause.setOnFinished(e -> loadScene("/com/expensetracker/login.fxml"));
+            pause.setOnFinished(e -> loadScene("login"));
             pause.play();
         } else {
             showError("An account with this email already exists.");
@@ -131,7 +127,7 @@ public class SignupController implements Initializable {
 
     @FXML
     private void handleGoToLogin() {
-        loadScene("/com/expensetracker/login.fxml");
+        loadScene("login");
     }
 
     // ── Helpers ────────────────────────────────────────────────────────────────
@@ -144,33 +140,9 @@ public class SignupController implements Initializable {
         return true;  // stub: always succeeds
     }
 
-    private void loadScene(String fxmlPath) {
+    private void loadScene(String fxml) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
-            Parent root = loader.load();
-
-            Stage stage = (Stage) signupButton.getScene().getWindow();
-
-            FadeTransition fade = new FadeTransition(Duration.millis(300), root);
-            fade.setFromValue(0);
-            fade.setToValue(1);
-
-            Scene newScene = new Scene(root);
-            
-            // Apply CSS stylesheet to new scene
-            try {
-                var cssResource = getClass().getResource("/com/expensetracker/styles.css");
-                if (cssResource != null) {
-                    newScene.getStylesheets().add(cssResource.toExternalForm());
-                }
-            } catch (Exception cssException) {
-                System.err.println("Warning: CSS file not found: " + cssException.getMessage());
-            }
-            
-            stage.setScene(newScene);
-            stage.show();
-            fade.play();
-
+            App.setRoot(fxml);
         } catch (IOException e) {
             e.printStackTrace();
             showError("Navigation error: " + e.getMessage());

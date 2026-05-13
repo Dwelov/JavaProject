@@ -1,14 +1,10 @@
 package com.expensetracker;
 
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.chart.*;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
-import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
@@ -84,11 +80,6 @@ public class AnalyticsController implements Initializable {
         categoryPieChart.setStyle("-fx-background-color: transparent;");
         categoryPieChart.setLabelLineLength(12);
         categoryPieChart.setLabelsVisible(true);
-
-        // Apply label colour after layout
-        categoryPieChart.getData().forEach(d ->
-            d.getNode().setStyle("-fx-pie-label-visible: true;")
-        );
     }
 
     // ── Category Breakdown Table ──────────────────────────────────────────────
@@ -181,21 +172,10 @@ public class AnalyticsController implements Initializable {
 
     private void navigateTo(String fxml) {
         try {
-            FXMLLoader loader = new FXMLLoader(
-                getClass().getResource("/com/expensetracker/" + fxml + ".fxml"));
-            Parent root = loader.load();
-            Stage stage = (Stage) categoryBreakdownList.getScene().getWindow();
-            Scene scene = new Scene(root);
-            applyCss(scene);
-            stage.setScene(scene);
-        } catch (IOException e) { e.printStackTrace(); }
-    }
-
-    private void applyCss(Scene scene) {
-        try {
-            var css = getClass().getResource("/com/expensetracker/styles.css");
-            if (css != null) scene.getStylesheets().add(css.toExternalForm());
-        } catch (Exception ignored) { }
+            App.setRoot(fxml);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private String fmt(double v) { return String.format("%,.0f", v); }

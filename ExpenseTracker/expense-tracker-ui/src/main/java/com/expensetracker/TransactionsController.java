@@ -1,10 +1,8 @@
 package com.expensetracker;
 
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
@@ -251,21 +249,10 @@ public class TransactionsController implements Initializable {
 
     private void navigateTo(String fxml) {
         try {
-            FXMLLoader loader = new FXMLLoader(
-                getClass().getResource("/com/expensetracker/" + fxml + ".fxml"));
-            Parent root = loader.load();
-            Stage stage = (Stage) transactionsContainer.getScene().getWindow();
-            Scene scene = new Scene(root);
-            applyCss(scene);
-            stage.setScene(scene);
-        } catch (IOException e) { e.printStackTrace(); }
-    }
-
-    private void applyCss(Scene scene) {
-        try {
-            var css = getClass().getResource("/com/expensetracker/styles.css");
-            if (css != null) scene.getStylesheets().add(css.toExternalForm());
-        } catch (Exception ignored) { }
+            App.setRoot(fxml);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     // ── Utilities ─────────────────────────────────────────────────────────────
