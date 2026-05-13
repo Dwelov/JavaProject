@@ -27,7 +27,7 @@ public class App extends Application {
         }
 
         stage.setTitle("FinanceOS");
-        stage.setResizable(false);
+        stage.setResizable(true);
 
         stage.setScene(scene);
         stage.show();
@@ -43,7 +43,6 @@ public class App extends Application {
         );
   
         
-
         return fxmlLoader.load();
     }
 
