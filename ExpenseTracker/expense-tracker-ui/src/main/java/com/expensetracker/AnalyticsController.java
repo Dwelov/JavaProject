@@ -18,7 +18,7 @@ public class AnalyticsController implements Initializable {
     @FXML private Label   netBalanceLabel;
     @FXML private Label   savingsRateLabel;
 
-    @FXML private BarChart<String, Number> weeklyChart;
+    @FXML private BarChart<Number, String> weeklyChart;
     @FXML private CategoryAxis weekAxis;
     @FXML private PieChart     categoryPieChart;
 
@@ -57,12 +57,12 @@ public class AnalyticsController implements Initializable {
         weeklyChart.getData().clear();
         double[] weeks = store.weeklyExpenses();
 
-        XYChart.Series<String, Number> series = new XYChart.Series<>();
+        XYChart.Series<Number, String> series = new XYChart.Series<>();
         series.setName("Expenses");
-        series.getData().add(new XYChart.Data<>("Week 1", weeks[0]));
-        series.getData().add(new XYChart.Data<>("Week 2", weeks[1]));
-        series.getData().add(new XYChart.Data<>("Week 3", weeks[2]));
-        series.getData().add(new XYChart.Data<>("Week 4", weeks[3]));
+        series.getData().add(new XYChart.Data<>(weeks[3], "Week 4"));
+        series.getData().add(new XYChart.Data<>(weeks[2], "Week 3"));
+        series.getData().add(new XYChart.Data<>(weeks[1], "Week 2"));
+        series.getData().add(new XYChart.Data<>(weeks[0], "Week 1"));
         weeklyChart.getData().add(series);
     }
 

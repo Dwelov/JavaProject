@@ -58,21 +58,28 @@ public class CategoriesController implements Initializable {
              .filter(t -> !t.isIncome())
              .forEach(t -> countMap.merge(t.getCategory(), 1L, Long::sum));
 
-        // Also show Income as a card
-        double totalIncome = store.totalIncome();
-        long   incomeCount = store.getAll().stream().filter(Transaction::isIncome).count();
+        // Get all categories from CAT_COLORS to ensure they all show up
+        List<String> allExpenseCats = new ArrayList<>(CAT_COLORS.keySet());
+        allExpenseCats.remove("Income"); // Handled separately
 
-        // Expense categories first, sorted by amount
-        expMap.entrySet().stream()
-              .sorted(Map.Entry.<String, Double>comparingByValue().reversed())
-              .forEach(e -> categoryGrid.getChildren().add(
-                  buildCategoryCard(e.getKey(), e.getValue(),
-                                    countMap.getOrDefault(e.getKey(), 0L), false)));
+        // Sort: those with expenses first (by amount), then the rest alphabetically
+        allExpenseCats.sort((a, b) -> {
+            double amtA = expMap.getOrDefault(a, 0.0);
+            double amtB = expMap.getOrDefault(b, 0.0);
+            if (amtA != amtB) return Double.compare(amtB, amtA);
+            return a.compareTo(b);
+        });
+
+        for (String cat : allExpenseCats) {
+            categoryGrid.getChildren().add(
+                buildCategoryCard(cat, expMap.getOrDefault(cat, 0.0),
+                                  countMap.getOrDefault(cat, 0L), false));
+        }
 
         // Income card
-        if (totalIncome > 0) {
-            categoryGrid.getChildren().add(buildCategoryCard("Income", totalIncome, incomeCount, true));
-        }
+        double totalIncome = store.totalIncome();
+        long   incomeCount = store.getAll().stream().filter(Transaction::isIncome).count();
+        categoryGrid.getChildren().add(buildCategoryCard("Income", totalIncome, incomeCount, true));
     }
 
     private VBox buildCategoryCard(String name, double total, long count, boolean isIncome) {
@@ -91,15 +98,33 @@ public class CategoriesController implements Initializable {
                       "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 12, 0, 0, 4);");
         card.setCursor(Cursor.HAND);
 
-        // Icon row
-        HBox iconRow = new HBox(10);
-        iconRow.setAlignment(Pos.CENTER_LEFT);
+        // Icon row + Delete Button
+        HBox topRow = new HBox(10);
+        topRow.setAlignment(Pos.CENTER_LEFT);
+        
         Label icon = new Label(categoryIcon(name));
         icon.setStyle("-fx-font-size: 22px;");
         Label nameLabel = new Label(name);
         nameLabel.setStyle("-fx-text-fill: #e8f5f0; -fx-font-family: 'Trebuchet MS';" +
                            " -fx-font-size: 14px; -fx-font-weight: bold;");
-        iconRow.getChildren().addAll(icon, nameLabel);
+        
+        Region spacer = new Region();
+        HBox.setHgrow(spacer, Priority.ALWAYS);
+        
+        Button deleteBtn = new Button("✕");
+        deleteBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: rgba(255,83,112,0.5); -fx-padding: 0; -fx-font-size: 14px;");
+        deleteBtn.setOnMouseEntered(e -> deleteBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: #ff5370; -fx-padding: 0; -fx-font-size: 14px;"));
+        deleteBtn.setOnMouseExited(e -> deleteBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: rgba(255,83,112,0.5); -fx-padding: 0; -fx-font-size: 14px;"));
+        
+        deleteBtn.setOnAction(e -> {
+            e.consume(); // Prevent card click
+            handleDeleteCategory(name);
+        });
+        
+        topRow.getChildren().addAll(icon, nameLabel, spacer);
+        if (!isIncome && !name.equals("Other")) {
+            topRow.getChildren().add(deleteBtn);
+        }
 
         // Amount
         String prefix = isIncome ? "+Rs " : "-Rs ";
@@ -111,7 +136,7 @@ public class CategoriesController implements Initializable {
         Label cntLabel = new Label(count + (count == 1 ? " transaction" : " transactions"));
         cntLabel.setStyle("-fx-text-fill: #8ca59b; -fx-font-family: 'Trebuchet MS'; -fx-font-size: 12px;");
 
-        card.getChildren().addAll(iconRow, amtLabel, cntLabel);
+        card.getChildren().addAll(topRow, amtLabel, cntLabel);
 
         // Hover effect
         card.setOnMouseEntered(e -> card.setStyle(card.getStyle()
@@ -123,6 +148,24 @@ public class CategoriesController implements Initializable {
         card.setOnMouseClicked(e -> showCategoryTransactions(name, total, isIncome, color));
 
         return card;
+    }
+
+    private void handleDeleteCategory(String categoryName) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Delete Category");
+        alert.setHeaderText("Delete '" + categoryName + "'?");
+        alert.setContentText("Are you sure you want to delete this category? This will not delete the transactions but they will lose their category association.");
+        
+        // Style alert (basic)
+        DialogPane dialogPane = alert.getDialogPane();
+        dialogPane.setStyle("-fx-background-color: #0d1520;");
+        dialogPane.lookupAll(".label").forEach(node -> node.setStyle("-fx-text-fill: white;"));
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            CAT_COLORS.remove(categoryName);
+            buildCategoryGrid();
+        }
     }
 
     // ── Per-category Transaction Drill-Down ───────────────────────────────────

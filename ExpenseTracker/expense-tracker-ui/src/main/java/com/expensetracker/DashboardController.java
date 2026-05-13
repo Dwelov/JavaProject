@@ -6,9 +6,9 @@ import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
+import javafx.scene.control.Slider;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
@@ -21,8 +21,9 @@ import java.util.ResourceBundle;
 
 public class DashboardController implements Initializable {
 
-    @FXML private ComboBox<String> monthSelector;
-    @FXML private BarChart<String, Number> statisticsChart;
+    @FXML private Label selectedMonthLabel;
+    @FXML private Slider monthSlider;
+    @FXML private BarChart<Number, String> statisticsChart;
     @FXML private CategoryAxis xAxis;
     @FXML private VBox transactionsList;
     @FXML private Label balanceLabel;
@@ -39,10 +40,17 @@ public class DashboardController implements Initializable {
 
     private final TransactionStore store = TransactionStore.getInstance();
 
+    private final String[] months = {
+        "January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+    };
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        monthSelector.getItems().addAll("March 2026", "April 2026", "May 2026");
-        monthSelector.getSelectionModel().selectLast();
+        monthSlider.valueProperty().addListener((obs, oldVal, newVal) -> {
+            int mIdx = newVal.intValue() - 1;
+            selectedMonthLabel.setText(months[mIdx] + " 2026");
+        });
 
         refreshSummaryCards();
         setupChart();
@@ -66,12 +74,13 @@ public class DashboardController implements Initializable {
         statisticsChart.getData().clear();
         double[] weeks = store.weeklyExpenses();
 
-        XYChart.Series<String, Number> expenses = new XYChart.Series<>();
+        XYChart.Series<Number, String> expenses = new XYChart.Series<>();
         expenses.setName("Expenses");
-        expenses.getData().add(new XYChart.Data<>("Week 1", weeks[0]));
-        expenses.getData().add(new XYChart.Data<>("Week 2", weeks[1]));
-        expenses.getData().add(new XYChart.Data<>("Week 3", weeks[2]));
-        expenses.getData().add(new XYChart.Data<>("Week 4", weeks[3]));
+        // For horizontal chart: X = Number, Y = String
+        expenses.getData().add(new XYChart.Data<>(weeks[3], "Week 4"));
+        expenses.getData().add(new XYChart.Data<>(weeks[2], "Week 3"));
+        expenses.getData().add(new XYChart.Data<>(weeks[1], "Week 2"));
+        expenses.getData().add(new XYChart.Data<>(weeks[0], "Week 1"));
 
         statisticsChart.getData().add(expenses);
     }

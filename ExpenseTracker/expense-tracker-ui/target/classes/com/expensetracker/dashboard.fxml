@@ -50,13 +50,16 @@
                 <padding><Insets top="40" right="40" bottom="40" left="40"/></padding>
 
                 <!-- Header -->
-                <HBox alignment="CENTER_LEFT">
+                <HBox alignment="CENTER_LEFT" spacing="20">
                     <VBox spacing="5">
                         <Label text="My Dashboard" styleClass="page-title"/>
                         <Label text="Welcome back, here is your financial overview." styleClass="page-subtitle"/>
                     </VBox>
                     <Region HBox.hgrow="ALWAYS"/>
-                    <ComboBox fx:id="monthSelector" styleClass="combo-box-custom" promptText="May 2026"/>
+                    <VBox alignment="CENTER_RIGHT" spacing="5">
+                        <Label fx:id="selectedMonthLabel" text="May 2026" styleClass="field-label"/>
+                        <Slider fx:id="monthSlider" min="1" max="12" value="5" blockIncrement="1" majorTickUnit="1" minorTickCount="0" snapToTicks="true" prefWidth="200" styleClass="month-slider"/>
+                    </VBox>
                 </HBox>
 
                 <!-- Summary cards (fx:id wired to live data) -->
@@ -76,20 +79,21 @@
                 </HBox>
 
                 <!-- Charts + recent transactions -->
-                <HBox spacing="20">
-                    <VBox styleClass="dashboard-card" HBox.hgrow="ALWAYS" spacing="15" prefWidth="580">
+                <HBox spacing="20" alignment="TOP_CENTER">
+                    <VBox styleClass="dashboard-card" spacing="15" prefWidth="650" maxWidth="850" HBox.hgrow="SOMETIMES">
                         <Label text="Weekly Spending" styleClass="section-title"/>
-                        <BarChart fx:id="statisticsChart" legendVisible="false" verticalGridLinesVisible="false">
+                        <BarChart fx:id="statisticsChart" legendVisible="false" verticalGridLinesVisible="true" horizontalGridLinesVisible="false"
+                                  categoryGap="20" barGap="5" prefHeight="350">
                             <xAxis>
-                                <CategoryAxis fx:id="xAxis" tickLabelFill="#8ca59b"/>
+                                <NumberAxis tickLabelFill="#8ca59b"/>
                             </xAxis>
                             <yAxis>
-                                <NumberAxis tickLabelFill="#8ca59b"/>
+                                <CategoryAxis fx:id="xAxis" tickLabelFill="#8ca59b"/>
                             </yAxis>
                         </BarChart>
                     </VBox>
 
-                    <VBox styleClass="dashboard-card" prefWidth="340" spacing="15">
+                    <VBox styleClass="dashboard-card" prefWidth="380" spacing="15" maxWidth="450" HBox.hgrow="SOMETIMES">
                         <HBox alignment="CENTER_LEFT">
                             <Label text="Recent Transactions" styleClass="section-title"/>
                             <Region HBox.hgrow="ALWAYS"/>

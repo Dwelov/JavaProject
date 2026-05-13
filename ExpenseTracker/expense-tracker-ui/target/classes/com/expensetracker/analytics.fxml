@@ -75,25 +75,26 @@
                 </HBox>
 
                 <!-- Charts row -->
-                <HBox spacing="20">
+                <HBox spacing="20" alignment="TOP_CENTER">
                     <!-- Weekly bar chart -->
-                    <VBox styleClass="dashboard-card" HBox.hgrow="ALWAYS" spacing="12" prefWidth="500">
+                    <VBox styleClass="dashboard-card" spacing="12" prefWidth="600" maxWidth="800" HBox.hgrow="SOMETIMES">
                         <Label text="Weekly Spending" styleClass="section-title"/>
                         <BarChart fx:id="weeklyChart" legendVisible="false"
-                                  verticalGridLinesVisible="false" prefHeight="260">
+                                  verticalGridLinesVisible="true" horizontalGridLinesVisible="false"
+                                  prefHeight="320" categoryGap="20" barGap="5">
                             <xAxis>
-                                <CategoryAxis fx:id="weekAxis" tickLabelFill="#8ca59b"/>
+                                <NumberAxis tickLabelFill="#8ca59b"/>
                             </xAxis>
                             <yAxis>
-                                <NumberAxis tickLabelFill="#8ca59b"/>
+                                <CategoryAxis fx:id="weekAxis" tickLabelFill="#8ca59b"/>
                             </yAxis>
                         </BarChart>
                     </VBox>
 
                     <!-- Pie chart -->
-                    <VBox styleClass="dashboard-card" prefWidth="380" spacing="12">
+                    <VBox styleClass="dashboard-card" prefWidth="420" maxWidth="500" spacing="12" HBox.hgrow="SOMETIMES">
                         <Label text="Spending by Category" styleClass="section-title"/>
-                        <PieChart fx:id="categoryPieChart" prefHeight="260" legendVisible="false"/>
+                        <PieChart fx:id="categoryPieChart" prefHeight="320" legendVisible="false"/>
                     </VBox>
                 </HBox>
 
