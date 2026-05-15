@@ -24,6 +24,7 @@ public class TransactionsController implements Initializable {
     @FXML private Label           emptyLabel;
     @FXML private Label           summaryLabel;
 
+
     private final TransactionStore store = TransactionStore.getInstance();
 
     @Override
