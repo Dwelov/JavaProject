@@ -52,9 +52,15 @@ public class DashboardController implements Initializable {
             selectedMonthLabel.setText(months[mIdx] + " 2026");
         });
 
-        refreshSummaryCards();
-        setupChart();
-        loadRecentTransactions();
+        // Fetch from backend in background thread
+        new Thread(() -> {
+            store.fetchTransactions();
+            javafx.application.Platform.runLater(() -> {
+                refreshSummaryCards();
+                setupChart();
+                loadRecentTransactions();
+            });
+        }).start();
     }
 
     // ── Summary Cards ──────────────────────────────────────────────────────────

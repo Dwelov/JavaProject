@@ -29,19 +29,26 @@ public class TransactionsController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        // Populate category filter from live data
-        categoryFilter.getItems().add("All Categories");
-        store.getAll().stream()
-             .map(Transaction::getCategory)
-             .distinct()
-             .sorted()
-             .forEach(categoryFilter.getItems()::add);
-        categoryFilter.getSelectionModel().selectFirst();
+        new Thread(() -> {
+            store.fetchTransactions();
+            javafx.application.Platform.runLater(() -> {
+                // Populate category filter from live data
+                categoryFilter.getItems().clear();
+                categoryFilter.getItems().add("All Categories");
+                store.getAll().stream()
+                     .map(Transaction::getCategory)
+                     .distinct()
+                     .sorted()
+                     .forEach(categoryFilter.getItems()::add);
+                categoryFilter.getSelectionModel().selectFirst();
 
-        typeFilter.getItems().addAll("All Types", "Income", "Expense");
-        typeFilter.getSelectionModel().selectFirst();
+                typeFilter.getItems().clear();
+                typeFilter.getItems().addAll("All Types", "Income", "Expense");
+                typeFilter.getSelectionModel().selectFirst();
 
-        renderTransactions(store.getAll());
+                renderTransactions(store.getAll());
+            });
+        }).start();
     }
 
     // ── Render ────────────────────────────────────────────────────────────────
@@ -131,8 +138,11 @@ public class TransactionsController implements Initializable {
         del.setOnMouseEntered(e -> del.setStyle(del.getStyle().replace("0.4)", "0.9)")));
         del.setOnMouseExited(e -> del.setStyle(del.getStyle().replace("0.9)", "0.4)")));
         del.setOnAction(e -> {
-            store.remove(t);
-            applyFilters();
+            del.setDisable(true);
+            new Thread(() -> {
+                store.remove(t);
+                javafx.application.Platform.runLater(this::applyFilters);
+            }).start();
         });
 
         row.getChildren().addAll(titleCol, catLabel, dateLabel, typeLabel, spacer, amtLabel, del);
@@ -228,12 +238,20 @@ public class TransactionsController implements Initializable {
                 return;
             }
             boolean isInc = incomeRb.isSelected();
-            store.add(new Transaction(ttl, cat, amount, dt, isInc));
-            // Refresh category filter options
-            if (!categoryFilter.getItems().contains(cat))
-                categoryFilter.getItems().add(cat);
-            applyFilters();
-            dialog.close();
+            
+            saveBtn.setDisable(true);
+            saveBtn.setText("Adding...");
+
+            new Thread(() -> {
+                store.add(new Transaction(ttl, cat, amount, dt, isInc));
+                javafx.application.Platform.runLater(() -> {
+                    // Refresh category filter options
+                    if (!categoryFilter.getItems().contains(cat))
+                        categoryFilter.getItems().add(cat);
+                    applyFilters();
+                    dialog.close();
+                });
+            }).start();
         });
 
         form.getChildren().addAll(heading, titleField, amountField, catBox, dateField, typeRow, errLabel, saveBtn);

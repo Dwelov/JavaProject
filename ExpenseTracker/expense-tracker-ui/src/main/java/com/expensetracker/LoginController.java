@@ -23,10 +23,6 @@ import javafx.util.Duration;
 
 /**
  * LoginController — handles login form logic, validation, and navigation.
- *
- * Wire-up:
- *   - Set your real UserService / AuthService in place of the stub validateCredentials().
- *   - Replace navigateToDashboard() body with your actual dashboard FXML path.
  */
 public class LoginController implements Initializable {
 
@@ -49,6 +45,7 @@ public class LoginController implements Initializable {
     }
 
     // ── Primary Action ─────────────────────────────────────────────────────────
+    @SuppressWarnings("unchecked")
     @FXML
     private void handleLogin() {
         String email    = emailField.getText().trim();
@@ -71,22 +68,34 @@ public class LoginController implements Initializable {
         loginButton.setDisable(true);
         loginButton.setText("Signing in…");
 
-        
-        // if (validateCredentials(email, password)) {
-        //     hideError();
-        //     navigateToDashboard();
-        // } dummy credentials for the checking of the code
-        if (email.equals("admin@financeos.com") && password.equals("password123")) {
-        hideError();
-        navigateToDashboard(); // Call your method that loads dashboard.fxml
-    }
-        else {
-            showError("Incorrect email or password. Please try again.");
-            shakeField(passwordField);
-            passwordField.clear();
-            loginButton.setDisable(false);
-            loginButton.setText("Sign In →");
-        }
+        // Backend login in background thread
+        new Thread(() -> {
+            try {
+                java.util.Map<String, Object> request = java.util.Map.of("email", email, "password", password);
+                java.util.Map<String, Object> response = ApiClient.post("/auth/login", request, java.util.Map.class);
+
+                if (response.containsKey("token")) {
+                    ApiClient.setAuthToken((String) response.get("token"));
+                    javafx.application.Platform.runLater(() -> {
+                        hideError();
+                        navigateToDashboard();
+                    });
+                } else {
+                    javafx.application.Platform.runLater(() -> {
+                        showError((String) response.getOrDefault("error", "Invalid credentials."));
+                        shakeField(passwordField);
+                        loginButton.setDisable(false);
+                        loginButton.setText("Sign In →");
+                    });
+                }
+            } catch (Exception e) {
+                javafx.application.Platform.runLater(() -> {
+                    showError("Connection error: " + e.getMessage());
+                    loginButton.setDisable(false);
+                    loginButton.setText("Sign In →");
+                });
+            }
+        }).start();
     }
 
     @FXML
@@ -104,13 +113,6 @@ public class LoginController implements Initializable {
     }
 
     // ── Helpers ────────────────────────────────────────────────────────────────
-
-    /** Stub — replace with your UserRepository / AuthService call. */
-    @SuppressWarnings("unused")
-    private boolean validateCredentials(String email, String password) {
-        // Example stub: accept admin / password
-        return "admin@example.com".equalsIgnoreCase(email) && "password".equals(password);
-    }
 
     private void navigateToDashboard() {
         try {

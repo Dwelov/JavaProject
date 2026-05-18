@@ -5,7 +5,7 @@ import java.util.List;
 
 /**
  * Singleton data store holding all transactions for the session.
- * Replace the seed data with DB / file I/O as needed.
+ * Synchronized with the backend API.
  */
 public class TransactionStore {
 
@@ -13,12 +13,26 @@ public class TransactionStore {
     private final List<Transaction> transactions = new ArrayList<>();
 
     private TransactionStore() {
-        seed();
+        // We will fetch from backend instead of seeding
     }
 
     public static TransactionStore getInstance() {
         if (instance == null) instance = new TransactionStore();
         return instance;
+    }
+
+    public void fetchTransactions() {
+        try {
+            Transaction[] fetched = ApiClient.get("/transactions", Transaction[].class);
+            transactions.clear();
+            if (fetched != null) {
+                for (Transaction t : fetched) {
+                    transactions.add(t);
+                }
+            }
+        } catch (Exception e) {
+            System.err.println("Error fetching transactions: " + e.getMessage());
+        }
     }
 
     // ── CRUD ───────────────────────────────────────────────────────────────────
@@ -28,11 +42,24 @@ public class TransactionStore {
     }
 
     public void add(Transaction t) {
-        transactions.add(t);
+        try {
+            Transaction saved = ApiClient.post("/transactions", t, Transaction.class);
+            if (saved != null) {
+                transactions.add(saved);
+            }
+        } catch (Exception e) {
+            System.err.println("Error adding transaction: " + e.getMessage());
+        }
     }
 
     public void remove(Transaction t) {
-        transactions.remove(t);
+        if (t.getId() == null) return;
+        try {
+            ApiClient.delete("/transactions/" + t.getId());
+            transactions.remove(t);
+        } catch (Exception e) {
+            System.err.println("Error removing transaction: " + e.getMessage());
+        }
     }
 
     // ── AGGREGATES ─────────────────────────────────────────────────────────────
@@ -76,45 +103,5 @@ public class TransactionStore {
             }
         }
         return weeks;
-    }
-
-    // ── SEED DATA ─────────────────────────────────────────────────────────────
-
-    private void seed() {
-        // Income
-        transactions.add(new Transaction("Freelance UI Project",  "Income",         65000, "01 May 2026", true));
-        transactions.add(new Transaction("Salary",                "Income",         90000, "05 May 2026", true));
-        transactions.add(new Transaction("Selling Old Laptop",    "Income",         25000, "10 May 2026", true));
-
-        // Food & Dining
-        transactions.add(new Transaction("Grocery Shopping",      "Food & Dining",   4500, "02 May 2026", false));
-        transactions.add(new Transaction("KFC Dinner",            "Food & Dining",   2200, "07 May 2026", false));
-        transactions.add(new Transaction("Bakery",                "Food & Dining",    800, "12 May 2026", false));
-        transactions.add(new Transaction("Dine-out with Family",  "Food & Dining",   5500, "18 May 2026", false));
-
-        // Utilities
-        transactions.add(new Transaction("Electricity Bill",      "Utilities",       3500, "03 May 2026", false));
-        transactions.add(new Transaction("Internet Bill",         "Utilities",       3000, "04 May 2026", false));
-        transactions.add(new Transaction("Gas Bill",              "Utilities",       1200, "04 May 2026", false));
-
-        // Health
-        transactions.add(new Transaction("Gym Membership",        "Health",          2500, "01 May 2026", false));
-        transactions.add(new Transaction("Doctor Visit",          "Health",          1500, "09 May 2026", false));
-        transactions.add(new Transaction("Medicines",             "Health",           900, "14 May 2026", false));
-
-        // Transport
-        transactions.add(new Transaction("Fuel",                  "Transport",       4000, "06 May 2026", false));
-        transactions.add(new Transaction("Rickshaw Fares",        "Transport",        600, "11 May 2026", false));
-
-        // Shopping
-        transactions.add(new Transaction("Clothes — Eid",        "Shopping",        8000, "15 May 2026", false));
-        transactions.add(new Transaction("Shoes",                 "Shopping",        4500, "20 May 2026", false));
-
-        // Education
-        transactions.add(new Transaction("Online Course",         "Education",       3500, "08 May 2026", false));
-
-        // Entertainment
-        transactions.add(new Transaction("Movie Tickets",         "Entertainment",   1400, "16 May 2026", false));
-        transactions.add(new Transaction("Netflix Subscription",  "Entertainment",    900, "05 May 2026", false));
     }
 }

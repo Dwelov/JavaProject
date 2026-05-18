@@ -43,7 +43,12 @@ public class CategoriesController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        buildCategoryGrid();
+        new Thread(() -> {
+            store.fetchTransactions();
+            javafx.application.Platform.runLater(() -> {
+                buildCategoryGrid();
+            });
+        }).start();
     }
 
     // ── Category Cards ────────────────────────────────────────────────────────

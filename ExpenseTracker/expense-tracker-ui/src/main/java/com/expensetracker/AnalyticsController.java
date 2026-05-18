@@ -28,10 +28,15 @@ public class AnalyticsController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        populateSummaryCards();
-        populateWeeklyChart();
-        populatePieChart();
-        populateCategoryBreakdown();
+        new Thread(() -> {
+            store.fetchTransactions();
+            javafx.application.Platform.runLater(() -> {
+                populateSummaryCards();
+                populateWeeklyChart();
+                populatePieChart();
+                populateCategoryBreakdown();
+            });
+        }).start();
     }
 
     // ── Summary Cards ─────────────────────────────────────────────────────────

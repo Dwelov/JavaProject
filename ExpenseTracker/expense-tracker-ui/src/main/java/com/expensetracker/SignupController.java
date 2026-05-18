@@ -14,10 +14,6 @@ import java.util.ResourceBundle;
 
 /**
  * SignupController — handles new account registration logic and navigation.
- *
- * Wire-up:
- *   - Replace registerUser() stub with your UserService / UserRepository call.
- *   - Update loadScene() paths to match your project's FXML layout.
  */
 public class SignupController implements Initializable {
 
@@ -106,23 +102,27 @@ public class SignupController implements Initializable {
         signupButton.setDisable(true);
         signupButton.setText("Creating account…");
 
-       
-        boolean success = registerUser(fullName, email, password);
+        // Backend signup in background thread
+        new Thread(() -> {
+            boolean success = registerUser(fullName, email, password);
 
-        if (success) {
-            showSuccess("Account created! Redirecting to login…");
+            javafx.application.Platform.runLater(() -> {
+                if (success) {
+                    showSuccess("Account created! Redirecting to login…");
 
-            // Brief pause then navigate
-            javafx.animation.PauseTransition pause =
-                    new javafx.animation.PauseTransition(Duration.seconds(1.4));
-            pause.setOnFinished(e -> loadScene("login"));
-            pause.play();
-        } else {
-            showError("An account with this email already exists.");
-            shakeField(emailField);
-            signupButton.setDisable(false);
-            signupButton.setText("Create Account →");
-        }
+                    // Brief pause then navigate
+                    javafx.animation.PauseTransition pause =
+                            new javafx.animation.PauseTransition(Duration.seconds(1.4));
+                    pause.setOnFinished(e -> loadScene("login"));
+                    pause.play();
+                } else {
+                    showError("An account with this email already exists.");
+                    shakeField(emailField);
+                    signupButton.setDisable(false);
+                    signupButton.setText("Create Account →");
+                }
+            });
+        }).start();
     }
 
     @FXML
@@ -132,12 +132,21 @@ public class SignupController implements Initializable {
 
     // ── Helpers ────────────────────────────────────────────────────────────────
 
-    /** Stub — replace with your UserService.register() call. */
+    /** Calls backend API to register a new user. */
+    @SuppressWarnings("unchecked")
     private boolean registerUser(String fullName, String email, String password) {
-       
-        // Example: return userService.register(fullName, email, password);
-        System.out.printf("Registering user: %s <%s>%n", fullName, email);
-        return true;  // stub: always succeeds
+        try {
+            java.util.Map<String, String> request = java.util.Map.of(
+                "fullName", fullName,
+                "email", email,
+                "password", password
+            );
+            java.util.Map<String, Object> response = ApiClient.post("/auth/signup", request, java.util.Map.class);
+            return response != null && response.containsKey("token");
+        } catch (Exception e) {
+            System.err.println("Registration error: " + e.getMessage());
+            return false;
+        }
     }
 
     private void loadScene(String fxml) {

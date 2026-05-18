@@ -1,4 +1,4 @@
-module-info.class
 com/expensetracker/App.class
 com/expensetracker/LoginController.class
+module-info.class
 com/expensetracker/SignupController.class
