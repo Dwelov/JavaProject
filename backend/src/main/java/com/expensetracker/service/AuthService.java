@@ -17,7 +17,11 @@ public class AuthService {
     private final JwtUtil jwtUtil;
 
     public AuthDto.AuthResponse login(AuthDto.LoginRequest request) {
-        User user = userRepository.findByEmail(request.getEmail())
+
+        // ✅ Trim and lowercase email before lookup
+        String email = request.getEmail().trim().toLowerCase();
+
+        User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("Invalid email or password"));
 
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
@@ -29,17 +33,23 @@ public class AuthService {
     }
 
     public AuthDto.AuthResponse signup(AuthDto.SignupRequest request) {
-        if (userRepository.existsByEmail(request.getEmail())) {
-            throw new RuntimeException("Email already registered");
+
+        // ✅ Trim and lowercase email before checking
+        String email = request.getEmail().trim().toLowerCase();
+
+        // ✅ Case-insensitive check
+        if (userRepository.existsByEmailIgnoreCase(email)) {
+            throw new RuntimeException("An account with this email already exists.");
         }
 
         User user = User.builder()
-                .fullName(request.getFullName())
-                .email(request.getEmail())
+                .fullName(request.getFullName().trim())
+                .email(email)                   // ✅ Save cleaned email
                 .password(passwordEncoder.encode(request.getPassword()))
                 .build();
 
         userRepository.save(user);
+
         String token = jwtUtil.generateToken(user.getEmail());
         return new AuthDto.AuthResponse(token, user.getEmail(), user.getFullName(), "Account created successfully");
     }

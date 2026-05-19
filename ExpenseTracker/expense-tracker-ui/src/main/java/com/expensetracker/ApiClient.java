@@ -35,6 +35,22 @@ public class ApiClient {
 
         HttpRequest request = builder.build();
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        
+        if (response.statusCode() >= 400) {
+            try {
+                java.util.Map<String, Object> errorResponse = mapper.readValue(response.body(), java.util.Map.class);
+                String errorMsg = null;
+                if (errorResponse.containsKey("error")) {
+                    errorMsg = (String) errorResponse.get("error");
+                } else if (errorResponse.containsKey("details")) {
+                    errorMsg = errorResponse.get("details").toString();
+                }
+                throw new RuntimeException(errorMsg != null ? errorMsg : "HTTP " + response.statusCode());
+            } catch (Exception e) {
+                throw new RuntimeException("Server error: " + e.getMessage());
+            }
+        }
+        
         return mapper.readValue(response.body(), responseType);
     }
 

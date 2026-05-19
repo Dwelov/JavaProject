@@ -116,8 +116,6 @@ public class SignupController implements Initializable {
                     pause.setOnFinished(e -> loadScene("login"));
                     pause.play();
                 } else {
-                    showError("An account with this email already exists.");
-                    shakeField(emailField);
                     signupButton.setDisable(false);
                     signupButton.setText("Create Account →");
                 }
@@ -144,7 +142,9 @@ public class SignupController implements Initializable {
             java.util.Map<String, Object> response = ApiClient.post("/auth/signup", request, java.util.Map.class);
             return response != null && response.containsKey("token");
         } catch (Exception e) {
-            System.err.println("Registration error: " + e.getMessage());
+            String errorMsg = e.getMessage();
+            System.err.println("Registration error: " + errorMsg);
+            showError(errorMsg != null && !errorMsg.isEmpty() ? errorMsg : "Failed to create account. Please try again.");
             return false;
         }
     }
@@ -198,12 +198,8 @@ public class SignupController implements Initializable {
 
     /** Returns null if password is valid, or an error message if not. */
     private String getPasswordError(String password) {
-        if (password.length() < 8)
-            return "Password must be at least 8 characters.";
-        if (!password.matches(".*[A-Z].*"))
-            return "Password must contain at least one uppercase letter.";
-        if (!password.matches(".*[0-9].*"))
-            return "Password must contain at least one number.";
+        if (password.length() < 6)
+            return "Password must be at least 6 characters.";
         return null;
     }
 

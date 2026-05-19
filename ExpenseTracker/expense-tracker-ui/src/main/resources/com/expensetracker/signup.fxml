@@ -89,7 +89,7 @@
 
             <Label text="Password" styleClass="field-label"/>
             <Region prefHeight="8"/>
-            <PasswordField fx:id="passwordField" promptText="Minimum 8 characters" styleClass="input-field"/>
+            <PasswordField fx:id="passwordField" promptText="Minimum 6 characters" styleClass="input-field"/>
 
             <Region prefHeight="18"/>
 
