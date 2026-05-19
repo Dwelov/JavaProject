@@ -14,43 +14,45 @@ public class TransactionService {
 
     private final TransactionRepository repo;
 
-    public List<Transaction> getAll() {
-        return repo.findAll();
+    public List<Transaction> getAllForUser(com.expensetracker.model.User user) {
+        return repo.findByUser(user);
     }
 
-    public Transaction add(Transaction t) {
+    public Transaction addForUser(Transaction t, com.expensetracker.model.User user) {
+        t.setUser(user);
         return repo.save(t);
     }
 
-    public void delete(Long id) {
-        repo.deleteById(id);
+    public void deleteForUser(Long id, com.expensetracker.model.User user) {
+        Transaction tx = repo.findById(id).filter(tr -> tr.getUser().equals(user)).orElseThrow();
+        repo.delete(tx);
     }
 
-    public double totalIncome() {
-        Double val = repo.sumIncome();
+    public double totalIncome(com.expensetracker.model.User user) {
+        Double val = repo.sumIncome(user);
         return val == null ? 0.0 : val;
     }
 
-    public double totalExpenses() {
-        Double val = repo.sumExpenses();
+    public double totalExpenses(com.expensetracker.model.User user) {
+        Double val = repo.sumExpenses(user);
         return val == null ? 0.0 : val;
     }
 
-    public double balance() {
-        return totalIncome() - totalExpenses();
+    public double balance(com.expensetracker.model.User user) {
+        return totalIncome(user) - totalExpenses(user);
     }
 
-    public Map<String, Double> expensesByCategory() {
-        return repo.findByIncomeFalse().stream()
+    public Map<String, Double> expensesByCategory(com.expensetracker.model.User user) {
+        return repo.findByIncomeFalseAndUser(user).stream()
                 .collect(Collectors.groupingBy(
                         Transaction::getCategory,
                         Collectors.summingDouble(Transaction::getAmount)
                 ));
     }
 
-    public double[] weeklyExpenses() {
+    public double[] weeklyExpenses(com.expensetracker.model.User user) {
         double[] weeks = new double[4];
-        for (Transaction t : repo.findByIncomeFalse()) {
+        for (Transaction t : repo.findByIncomeFalseAndUser(user)) {
             try {
                 int day  = Integer.parseInt(t.getDate().split(" ")[0]);
                 int week = Math.min((day - 1) / 7, 3);
@@ -60,12 +62,12 @@ public class TransactionService {
         return weeks;
     }
 
-    public Map<String, Object> summary() {
-        double income   = totalIncome();
-        double expenses = totalExpenses();
+    public Map<String, Object> summaryForUser(com.expensetracker.model.User user) {
+        double income   = totalIncome(user);
+        double expenses = totalExpenses(user);
         double balance  = income - expenses;
         double rate     = income > 0 ? (balance / income) * 100 : 0;
-        double[] weeks  = weeklyExpenses();
+        double[] weeks  = weeklyExpenses(user);
 
         Map<String, Object> map = new LinkedHashMap<>();
         map.put("totalIncome",    income);
@@ -73,7 +75,8 @@ public class TransactionService {
         map.put("balance",        balance);
         map.put("savingsRate",    rate);
         map.put("weeklyExpenses", weeks);
-        map.put("byCategory",     expensesByCategory());
+        map.put("byCategory",     expensesByCategory(user));
         return map;
     }
 }
+

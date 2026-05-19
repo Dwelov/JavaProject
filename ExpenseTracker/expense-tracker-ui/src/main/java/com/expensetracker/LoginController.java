@@ -8,17 +8,13 @@ import java.util.ResourceBundle;
 import javafx.animation.FadeTransition;
 import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Region;
-import javafx.stage.Stage;
 import javafx.util.Duration;
 
 /**
@@ -100,16 +96,16 @@ public class LoginController implements Initializable {
 
     @FXML
     private void handleForgotPassword() {
-        showError("Password reset email sent! Check your inbox.");
-        errorLabel.getStyleClass().removeAll("error-label");
-        if (!errorLabel.getStyleClass().contains("success-label")) {
-            errorLabel.getStyleClass().add("success-label");
-        }
+        showSuccess("Password reset email sent! Check your inbox.");
     }
 
     @FXML
     private void handleGoToSignup() {
-        loadScene("/com/expensetracker/signup.fxml");
+        try {
+            App.setRoot("signup");
+        } catch (IOException e) {
+            showError("Navigation error: " + e.getMessage());
+        }
     }
 
     // ── Helpers ────────────────────────────────────────────────────────────────
@@ -122,47 +118,32 @@ public class LoginController implements Initializable {
         }
     }
 
-    private void loadScene(String fxmlPath) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
-            Parent root = loader.load();
-
-            Stage stage = (Stage) loginButton.getScene().getWindow();
-
-            // Fade transition between scenes
-            FadeTransition fade = new FadeTransition(Duration.millis(300), root);
-            fade.setFromValue(0);
-            fade.setToValue(1);
-
-            Scene newScene = new Scene(root);
-            
-            // Apply CSS stylesheet to new scene
-            try {
-                var cssResource = getClass().getResource("/com/expensetracker/styles.css");
-                if (cssResource != null) {
-                    newScene.getStylesheets().add(cssResource.toExternalForm());
-                }
-            } catch (Exception cssException) {
-                System.err.println("Warning: CSS file not found: " + cssException.getMessage());
-            }
-            
-            stage.setScene(newScene);
-            stage.show();
-            fade.play();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            showError("Navigation error: " + e.getMessage());
-        }
-    }
-
     private void showError(String message) {
+        errorLabel.getStyleClass().removeAll("success-label");
+        if (!errorLabel.getStyleClass().contains("error-label")) {
+            errorLabel.getStyleClass().add("error-label");
+        }
         errorLabel.setText(message);
         errorLabel.setVisible(true);
         errorLabel.setManaged(true);
         errorSpacer.setPrefHeight(12);
 
-        // Fade in
+        FadeTransition ft = new FadeTransition(Duration.millis(200), errorLabel);
+        ft.setFromValue(0);
+        ft.setToValue(1);
+        ft.play();
+    }
+
+    private void showSuccess(String message) {
+        errorLabel.getStyleClass().removeAll("error-label");
+        if (!errorLabel.getStyleClass().contains("success-label")) {
+            errorLabel.getStyleClass().add("success-label");
+        }
+        errorLabel.setText(message);
+        errorLabel.setVisible(true);
+        errorLabel.setManaged(true);
+        errorSpacer.setPrefHeight(12);
+
         FadeTransition ft = new FadeTransition(Duration.millis(200), errorLabel);
         ft.setFromValue(0);
         ft.setToValue(1);

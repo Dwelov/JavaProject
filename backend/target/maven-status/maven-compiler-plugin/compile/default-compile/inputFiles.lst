@@ -4,6 +4,8 @@
 /home/siraj/projects/project/JavaProject/backend/src/main/java/com/expensetracker/controller/PingController.java
 /home/siraj/projects/project/JavaProject/backend/src/main/java/com/expensetracker/controller/TransactionController.java
 /home/siraj/projects/project/JavaProject/backend/src/main/java/com/expensetracker/dto/AuthDto.java
+/home/siraj/projects/project/JavaProject/backend/src/main/java/com/expensetracker/dto/TransactionDto.java
+/home/siraj/projects/project/JavaProject/backend/src/main/java/com/expensetracker/dto/TransactionDtoMapper.java
 /home/siraj/projects/project/JavaProject/backend/src/main/java/com/expensetracker/model/Transaction.java
 /home/siraj/projects/project/JavaProject/backend/src/main/java/com/expensetracker/model/User.java
 /home/siraj/projects/project/JavaProject/backend/src/main/java/com/expensetracker/repository/TransactionRepository.java

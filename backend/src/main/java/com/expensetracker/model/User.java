@@ -11,6 +11,8 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@EqualsAndHashCode(exclude = "transactions")
+@ToString(exclude = "transactions")
 public class User {
 
     @Id
@@ -27,4 +29,9 @@ public class User {
 
     @NotBlank
     private String password;
+
+    @Builder.Default
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @com.fasterxml.jackson.annotation.JsonManagedReference
+    private java.util.List<Transaction> transactions = new java.util.ArrayList<>();
 }

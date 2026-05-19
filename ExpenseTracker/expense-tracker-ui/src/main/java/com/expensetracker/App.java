@@ -25,6 +25,7 @@ public class App extends Application {
             // CSS file not found, continue without it
             System.err.println("Warning: CSS file not found: " + e.getMessage());
         }
+        
 
         stage.setTitle("FinanceOS");
         stage.setResizable(true);

@@ -140,8 +140,15 @@ public class TransactionsController implements Initializable {
         del.setOnAction(e -> {
             del.setDisable(true);
             new Thread(() -> {
-                store.remove(t);
-                javafx.application.Platform.runLater(this::applyFilters);
+                try {
+                    store.remove(t);
+                    javafx.application.Platform.runLater(this::applyFilters);
+                } catch (Exception ex) {
+                    javafx.application.Platform.runLater(() -> {
+                        del.setDisable(false);
+                        System.err.println("Failed to delete: " + ex.getMessage());
+                    });
+                }
             }).start();
         });
 
@@ -243,7 +250,12 @@ public class TransactionsController implements Initializable {
             saveBtn.setText("Adding...");
 
             new Thread(() -> {
-                store.add(new Transaction(ttl, cat, amount, dt, isInc));
+                try {
+					store.add(new Transaction(ttl, cat, amount, dt, isInc));
+				} catch (Exception e1) {
+					
+					e1.printStackTrace();
+				}
                 javafx.application.Platform.runLater(() -> {
                     // Refresh category filter options
                     if (!categoryFilter.getItems().contains(cat))

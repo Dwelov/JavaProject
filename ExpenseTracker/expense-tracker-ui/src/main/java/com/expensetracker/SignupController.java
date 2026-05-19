@@ -104,10 +104,10 @@ public class SignupController implements Initializable {
 
         // Backend signup in background thread
         new Thread(() -> {
-            boolean success = registerUser(fullName, email, password);
+            String error = registerUser(fullName, email, password);
 
             javafx.application.Platform.runLater(() -> {
-                if (success) {
+                if (error == null) {
                     showSuccess("Account created! Redirecting to login…");
 
                     // Brief pause then navigate
@@ -116,6 +116,8 @@ public class SignupController implements Initializable {
                     pause.setOnFinished(e -> loadScene("login"));
                     pause.play();
                 } else {
+                    showError(error);
+                    shakeField(emailField);
                     signupButton.setDisable(false);
                     signupButton.setText("Create Account →");
                 }
@@ -130,9 +132,8 @@ public class SignupController implements Initializable {
 
     // ── Helpers ────────────────────────────────────────────────────────────────
 
-    /** Calls backend API to register a new user. */
     @SuppressWarnings("unchecked")
-    private boolean registerUser(String fullName, String email, String password) {
+	private String registerUser(String fullName, String email, String password) {
         try {
             java.util.Map<String, String> request = java.util.Map.of(
                 "fullName", fullName,
@@ -140,12 +141,15 @@ public class SignupController implements Initializable {
                 "password", password
             );
             java.util.Map<String, Object> response = ApiClient.post("/auth/signup", request, java.util.Map.class);
-            return response != null && response.containsKey("token");
+            if (response != null && response.containsKey("token")) {
+                return null; // success
+            }
+            // Unexpected successful response shape
+            return "Unexpected server response.";
         } catch (Exception e) {
             String errorMsg = e.getMessage();
             System.err.println("Registration error: " + errorMsg);
-            showError(errorMsg != null && !errorMsg.isEmpty() ? errorMsg : "Failed to create account. Please try again.");
-            return false;
+            return (errorMsg != null && !errorMsg.isEmpty()) ? errorMsg : "Failed to create account. Please try again.";
         }
     }
 

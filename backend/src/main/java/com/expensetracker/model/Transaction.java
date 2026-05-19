@@ -12,6 +12,8 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@EqualsAndHashCode(exclude = "user")
+@ToString(exclude = "user")
 public class Transaction {
 
     @Id
@@ -32,4 +34,9 @@ public class Transaction {
     private String date;
 
     private boolean income;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    @com.fasterxml.jackson.annotation.JsonBackReference
+    private User user;
 }

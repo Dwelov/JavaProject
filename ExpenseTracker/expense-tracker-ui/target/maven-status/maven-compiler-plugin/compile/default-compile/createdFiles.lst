@@ -1,4 +1,11 @@
+com/expensetracker/AnalyticsController.class
 com/expensetracker/App.class
 com/expensetracker/LoginController.class
+com/expensetracker/TransactionsController.class
+com/expensetracker/ApiClient.class
+com/expensetracker/CategoriesController.class
 module-info.class
+com/expensetracker/DashboardController.class
+com/expensetracker/Transaction.class
+com/expensetracker/TransactionStore.class
 com/expensetracker/SignupController.class

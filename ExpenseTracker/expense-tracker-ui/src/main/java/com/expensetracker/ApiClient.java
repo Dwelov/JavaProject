@@ -38,14 +38,24 @@ public class ApiClient {
         
         if (response.statusCode() >= 400) {
             try {
+                @SuppressWarnings("unchecked")
                 java.util.Map<String, Object> errorResponse = mapper.readValue(response.body(), java.util.Map.class);
                 String errorMsg = null;
-                if (errorResponse.containsKey("error")) {
+                if (errorResponse.containsKey("details")) {
+                    Object details = errorResponse.get("details");
+                    if (details instanceof java.util.Map) {
+                        @SuppressWarnings("unchecked")
+                        java.util.Map<String, String> fieldErrors = (java.util.Map<String, String>) details;
+                        errorMsg = String.join("; ", fieldErrors.values());
+                    } else {
+                        errorMsg = details.toString();
+                    }
+                } else if (errorResponse.containsKey("error")) {
                     errorMsg = (String) errorResponse.get("error");
-                } else if (errorResponse.containsKey("details")) {
-                    errorMsg = errorResponse.get("details").toString();
                 }
                 throw new RuntimeException(errorMsg != null ? errorMsg : "HTTP " + response.statusCode());
+            } catch (RuntimeException re) {
+                throw re;
             } catch (Exception e) {
                 throw new RuntimeException("Server error: " + e.getMessage());
             }

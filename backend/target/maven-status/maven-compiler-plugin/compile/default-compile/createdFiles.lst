@@ -7,9 +7,11 @@ com/expensetracker/security/JwtFilter.class
 com/expensetracker/BackendApplication.class
 com/expensetracker/repository/TransactionRepository.class
 com/expensetracker/DataSeeder.class
+com/expensetracker/dto/TransactionDtoMapper.class
 com/expensetracker/model/User$UserBuilder.class
 com/expensetracker/repository/UserRepository.class
 com/expensetracker/model/Transaction$TransactionBuilder.class
+com/expensetracker/dto/TransactionDto.class
 com/expensetracker/model/User.class
 com/expensetracker/dto/AuthDto$AuthResponse.class
 com/expensetracker/security/GlobalExceptionHandler.class

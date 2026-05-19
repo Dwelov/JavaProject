@@ -41,25 +41,17 @@ public class TransactionStore {
         return new ArrayList<>(transactions);
     }
 
-    public void add(Transaction t) {
-        try {
-            Transaction saved = ApiClient.post("/transactions", t, Transaction.class);
-            if (saved != null) {
-                transactions.add(saved);
-            }
-        } catch (Exception e) {
-            System.err.println("Error adding transaction: " + e.getMessage());
+    public void add(Transaction t) throws Exception {
+        Transaction saved = ApiClient.post("/transactions", t, Transaction.class);
+        if (saved != null) {
+            transactions.add(saved);
         }
     }
 
-    public void remove(Transaction t) {
+    public void remove(Transaction t) throws Exception {
         if (t.getId() == null) return;
-        try {
-            ApiClient.delete("/transactions/" + t.getId());
-            transactions.remove(t);
-        } catch (Exception e) {
-            System.err.println("Error removing transaction: " + e.getMessage());
-        }
+        ApiClient.delete("/transactions/" + t.getId());
+        transactions.remove(t);
     }
 
     // ── AGGREGATES ─────────────────────────────────────────────────────────────

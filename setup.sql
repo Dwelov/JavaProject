@@ -19,7 +19,9 @@ CREATE TABLE IF NOT EXISTS transactions (
     category VARCHAR(255) NOT NULL,
     amount DOUBLE PRECISION NOT NULL,
     date VARCHAR(255) NOT NULL,
-    income BOOLEAN NOT NULL DEFAULT FALSE
+    income BOOLEAN NOT NULL DEFAULT FALSE,
+    user_id BIGINT NOT NULL,
+    CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
 -- Note: Hibernate will automatically create these tables if spring.jpa.hibernate.ddl-auto=update is set.
