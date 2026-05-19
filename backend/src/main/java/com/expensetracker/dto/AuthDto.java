@@ -19,7 +19,7 @@ public class AuthDto {
         private String fullName;
         @Email @NotBlank
         private String email;
-        @NotBlank @Size(min = 8)
+        @NotBlank @Size(min = 6)
         private String password;
     }
 
@@ -32,3 +32,5 @@ public class AuthDto {
         private String message;
     }
 }
+
+

@@ -8,6 +8,7 @@
 /home/siraj/projects/project/JavaProject/backend/src/main/java/com/expensetracker/model/User.java
 /home/siraj/projects/project/JavaProject/backend/src/main/java/com/expensetracker/repository/TransactionRepository.java
 /home/siraj/projects/project/JavaProject/backend/src/main/java/com/expensetracker/repository/UserRepository.java
+/home/siraj/projects/project/JavaProject/backend/src/main/java/com/expensetracker/security/GlobalExceptionHandler.java
 /home/siraj/projects/project/JavaProject/backend/src/main/java/com/expensetracker/security/JwtFilter.java
 /home/siraj/projects/project/JavaProject/backend/src/main/java/com/expensetracker/security/JwtUtil.java
 /home/siraj/projects/project/JavaProject/backend/src/main/java/com/expensetracker/security/SecurityConfig.java

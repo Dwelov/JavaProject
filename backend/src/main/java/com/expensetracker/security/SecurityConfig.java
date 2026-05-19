@@ -37,7 +37,8 @@ public class SecurityConfig {
                 .requestMatchers(
                     "/api/auth/**",
                     "/h2-console/**",
-                    "/api/ping"
+                    "/api/ping",
+                    "/error"
                 ).permitAll()
                 // Everything else needs JWT
                 .anyRequest().authenticated()
