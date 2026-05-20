@@ -86,7 +86,7 @@ public class LoginController implements Initializable {
                 }
             } catch (Exception e) {
                 javafx.application.Platform.runLater(() -> {
-                    showError("Connection error: " + e.getMessage());
+                    showError(e.getMessage());
                     loginButton.setDisable(false);
                     loginButton.setText("Sign In →");
                 });

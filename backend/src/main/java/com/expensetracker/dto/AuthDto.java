@@ -16,10 +16,16 @@ public class AuthDto {
     @Data
     public static class SignupRequest {
         @NotBlank
+        @Size(min = 2, max = 100, message = "Full name must be between 2 and 100 characters")
         private String fullName;
-        @Email @NotBlank
+
+        @Email(message = "Please provide a valid email address")
+        @NotBlank(message = "Email is required")
+        @Size(max = 100, message = "Email must not exceed 100 characters")
         private String email;
-        @NotBlank @Size(min = 6, message = "password must be at least 6 characters")
+
+        @NotBlank(message = "Password is required")
+        @Size(min = 6, max = 100, message = "Password must be between 6 and 100 characters")
         private String password;
     }
 

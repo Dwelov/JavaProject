@@ -117,7 +117,19 @@ public class SignupController implements Initializable {
                     pause.play();
                 } else {
                     showError(error);
-                    shakeField(emailField);
+                    
+                    // Intelligent field shaking
+                    String lowerError = error.toLowerCase();
+                    if (lowerError.contains("email")) {
+                        shakeField(emailField);
+                    } else if (lowerError.contains("password")) {
+                        shakeField(passwordField);
+                    } else if (lowerError.contains("name")) {
+                        shakeField(fullNameField);
+                    } else {
+                        shakeField(signupButton);
+                    }
+
                     signupButton.setDisable(false);
                     signupButton.setText("Create Account →");
                 }
