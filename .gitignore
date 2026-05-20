@@ -1,38 +1,14 @@
-# Maven
-target/
-pom.xml.tag
-pom.xml.releaseBackup
-pom.xml.versionsBackup
-pom.xml.next
-release.properties
-dependency-reduced-pom.xml
-buildNumber.properties
-.mvn/timing.properties
-.mvn/wrapper/maven-wrapper.jar
-
-# IDEs
+# Maven/Java
+**/target/
+*.log
+*.class
+# IDE
 .idea/
 *.iml
-*.iws
-.vscode/
+*.classpath
+*.project
 .settings/
-.classpath
-.project
-.factorypath
-
+# env
+.env
 # OS
 .DS_Store
-Thumbs.db
-
-# Log files
-*.log
-
-# H2 Database
-*.mv.db
-*.trace.db
-
-# Python (if any)
-__pycache__/
-*.py[cod]
-*$py.class
-.backend-doc-venv/
