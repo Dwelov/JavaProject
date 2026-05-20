@@ -29,6 +29,7 @@ public class DashboardController implements Initializable {
     @FXML private Label balanceLabel;
     @FXML private Label incomeLabel;
     @FXML private Label expenseLabel;
+    @FXML private Label userNameLabel;
 
     // Sidebar nav buttons
     @FXML private Button navTransactions;
@@ -47,6 +48,11 @@ public class DashboardController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        if (userNameLabel != null) {
+            String fullName = ApiClient.getUserFullName();
+            userNameLabel.setText(fullName != null ? fullName : "User");
+        }
+
         monthSlider.valueProperty().addListener((obs, oldVal, newVal) -> {
             int mIdx = newVal.intValue() - 1;
             selectedMonthLabel.setText(months[mIdx] + " 2026");

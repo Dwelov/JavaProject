@@ -72,6 +72,7 @@ public class LoginController implements Initializable {
 
                 if (response.containsKey("token")) {
                     ApiClient.setAuthToken((String) response.get("token"));
+                    ApiClient.setUserFullName((String) response.getOrDefault("fullName", "User"));
                     javafx.application.Platform.runLater(() -> {
                         hideError();
                         navigateToDashboard();

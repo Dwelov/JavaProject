@@ -11,7 +11,7 @@ import java.time.Duration;
 import java.util.Map;
 
 public class ApiClient {
-    private static final String BASE_URL = "http://127.0.0.1:8080/api";
+    private static final String BASE_URL = "http://localhost:8080/api";
     private static final Duration TIMEOUT = Duration.ofSeconds(10);
     private static final HttpClient client = HttpClient.newBuilder()
             .connectTimeout(TIMEOUT)
@@ -20,6 +20,7 @@ public class ApiClient {
             .registerModule(new JavaTimeModule())
             .configure(com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     private static String authToken;
+    private static String userFullName;
 
     public static void setAuthToken(String token) {
         authToken = token;
@@ -27,6 +28,14 @@ public class ApiClient {
 
     public static String getAuthToken() {
         return authToken;
+    }
+
+    public static void setUserFullName(String name) {
+        userFullName = name;
+    }
+
+    public static String getUserFullName() {
+        return userFullName;
     }
 
     public static <T> T post(String endpoint, Object body, Class<T> responseType) throws Exception {

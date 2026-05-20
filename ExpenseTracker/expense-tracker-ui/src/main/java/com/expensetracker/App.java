@@ -16,8 +16,6 @@ public class App extends Application {
         scene = new Scene(loadFXML("login"), 1100, 700);
 
 
-
-        
         // Load CSS if available
         try {
             var cssResource = App.class.getResource("/com/expensetracker/styles.css");

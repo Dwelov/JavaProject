@@ -1,6 +1,7 @@
 package com.expensetracker.controller;
 
-import com.expensetracker.dto.AuthDto;
+import com.expensetracker.dto.AuthDto.LoginRequest;
+import com.expensetracker.dto.AuthDto.SignupRequest;
 import com.expensetracker.service.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +19,7 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@Valid @RequestBody AuthDto.LoginRequest request) {
+    public ResponseEntity<?> login(@Valid @RequestBody LoginRequest request) {
         try {
             return ResponseEntity.ok(authService.login(request));
         } catch (RuntimeException e) {
@@ -27,7 +28,7 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<?> signup(@Valid @RequestBody AuthDto.SignupRequest request) {
+    public ResponseEntity<?> signup(@Valid @RequestBody SignupRequest request) {
         try {
             return ResponseEntity.ok(authService.signup(request));
         } catch (RuntimeException e) {

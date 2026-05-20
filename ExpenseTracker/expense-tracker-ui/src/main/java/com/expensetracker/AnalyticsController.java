@@ -23,11 +23,17 @@ public class AnalyticsController implements Initializable {
     @FXML private PieChart     categoryPieChart;
 
     @FXML private VBox    categoryBreakdownList;
+    @FXML private Label   userNameLabel;
 
     private final TransactionStore store = TransactionStore.getInstance();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        if (userNameLabel != null) {
+            String fullName = ApiClient.getUserFullName();
+            userNameLabel.setText(fullName != null ? fullName : "User");
+        }
+
         new Thread(() -> {
             store.fetchTransactions();
             javafx.application.Platform.runLater(() -> {

@@ -2,7 +2,7 @@
 -- Run these commands in your PostgreSQL terminal or pgAdmin
 
 -- 1. Create the database
--- CREATE DATABASE expense_tracker;
+CREATE DATABASE expense_tracker;
 
 -- 2. Create the users table
 CREATE TABLE IF NOT EXISTS users (

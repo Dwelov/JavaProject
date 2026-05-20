@@ -24,6 +24,7 @@ public class CategoriesController implements Initializable {
     @FXML private Label selectedCategoryTotal;
     @FXML private VBox  categoryTransactionsList;
     @FXML private Label noCatTransLabel;
+    @FXML private Label userNameLabel;
 
     private final TransactionStore store = TransactionStore.getInstance();
 
@@ -43,6 +44,11 @@ public class CategoriesController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        if (userNameLabel != null) {
+            String fullName = ApiClient.getUserFullName();
+            userNameLabel.setText(fullName != null ? fullName : "User");
+        }
+
         new Thread(() -> {
             store.fetchTransactions();
             javafx.application.Platform.runLater(() -> {

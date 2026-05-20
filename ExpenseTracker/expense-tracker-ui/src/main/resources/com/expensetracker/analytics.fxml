@@ -35,7 +35,7 @@
             <Region VBox.vgrow="ALWAYS"/>
 
             <VBox spacing="10" styleClass="user-profile-card">
-                <Label text="Rahib" styleClass="user-name"/>
+                <Label fx:id="userNameLabel" text="Rahib" styleClass="user-name"/>
                 <Label text="Free Plan" styleClass="user-plan"/>
                 <Button text="Log Out" styleClass="logout-button" maxWidth="Infinity" onAction="#handleLogout"/>
             </VBox>

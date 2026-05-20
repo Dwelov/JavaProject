@@ -17,8 +17,27 @@ public class JwtUtil {
     @Value("${jwt.expiration}")
     private long expiration;
 
+    private volatile Key key;
+
     private Key getKey() {
-        return Keys.hmacShaKeyFor(secret.getBytes());
+        if (key != null) return key;
+        synchronized (this) {
+            if (key != null) return key;
+            try {
+                if (secret != null && secret.getBytes().length >= 32) {
+                    key = Keys.hmacShaKeyFor(secret.getBytes());
+                } else {
+                    // generate a secure random key for HS256 and warn
+                    key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+                    System.err.println("WARNING: jwt.secret is missing or too short — generated a temporary key. Set JWT_SECRET env var for persistent tokens.");
+                }
+            } catch (IllegalArgumentException e) {
+                // fallback to generated secure key
+                key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+                System.err.println("WARNING: jwt.secret invalid — generated a temporary key. Set JWT_SECRET env var for persistent tokens.");
+            }
+            return key;
+        }
     }
 
     public String generateToken(String email) {

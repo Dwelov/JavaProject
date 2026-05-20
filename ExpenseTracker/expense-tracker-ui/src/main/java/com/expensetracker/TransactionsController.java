@@ -23,12 +23,18 @@ public class TransactionsController implements Initializable {
     @FXML private VBox            transactionsContainer;
     @FXML private Label           emptyLabel;
     @FXML private Label           summaryLabel;
+    @FXML private Label           userNameLabel;
 
 
     private final TransactionStore store = TransactionStore.getInstance();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        if (userNameLabel != null) {
+            String fullName = ApiClient.getUserFullName();
+            userNameLabel.setText(fullName != null ? fullName : "User");
+        }
+
         new Thread(() -> {
             store.fetchTransactions();
             javafx.application.Platform.runLater(() -> {
