@@ -36,7 +36,11 @@
 
 /* ── LEFT PANEL ── */
 .left-panel {
-    -fx-background-color: transparent;
+    -fx-background-color: rgba(20, 25, 35, 0.85);
+    -fx-background-radius: 24 0 0 24;
+    -fx-border-color: rgba(255, 255, 255, 0.1) transparent rgba(255, 255, 255, 0.05) rgba(255, 255, 255, 0.1);
+    -fx-border-radius: 24 0 0 24;
+    -fx-border-width: 1 0 1 1;
 }
 
 /* ── LOGO ── */
@@ -115,12 +119,12 @@
 
 /* ── FORM CARD ── */
 .form-card {
-    -fx-background-color: rgba(18, 22, 32, 0.92);
-    -fx-background-radius: 24 0 0 24;
-    -fx-border-color: rgba(255, 255, 255, 0.07) transparent rgba(255, 255, 255, 0.04) rgba(255, 255, 255, 0.10);
-    -fx-border-radius: 24 0 0 24;
-    -fx-border-width: 1 0 1 1;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.55), 40, 0, -8, 0);
+    -fx-background-color: rgba(18, 22, 32, 0.95);
+    -fx-background-radius: 0 24 24 0;
+    -fx-border-color: rgba(255, 255, 255, 0.07) rgba(255, 255, 255, 0.10) rgba(255, 255, 255, 0.04) transparent;
+    -fx-border-radius: 0 24 24 0;
+    -fx-border-width: 1 1 1 0;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.55), 40, 0, 8, 0);
 }
 
 /* ── FORM HEADINGS ── */

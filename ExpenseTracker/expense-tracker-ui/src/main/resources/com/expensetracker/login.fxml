@@ -14,110 +14,113 @@
     <!-- Background layer -->
     <Pane styleClass="bg-layer" />
 
-    <!-- Decorative circles -->
-    <Pane mouseTransparent="true">
-        <Circle styleClass="deco-circle-large"  centerX="100" centerY="120" radius="180"/>
-        <Circle styleClass="deco-circle-small"  centerX="980" centerY="580" radius="120"/>
-        <Circle styleClass="deco-circle-accent" centerX="950" centerY="80"  radius="60"/>
-    </Pane>
+    <!-- Decorative circles (Responsive positioning) -->
+    <AnchorPane mouseTransparent="true">
+        <Circle styleClass="deco-circle-large"  radius="180" AnchorPane.topAnchor="-90.0" AnchorPane.leftAnchor="-90.0"/>
+        <Circle styleClass="deco-circle-small"  radius="120" AnchorPane.bottomAnchor="-60.0" AnchorPane.rightAnchor="-60.0"/>
+        <Circle styleClass="deco-circle-accent" radius="60" AnchorPane.topAnchor="100.0" AnchorPane.rightAnchor="100.0"/>
+    </AnchorPane>
 
     <!-- Main Content -->
-    <HBox alignment="CENTER" spacing="0">
+    <HBox alignment="CENTER">
+        <padding><Insets top="40" right="40" bottom="40" left="40"/></padding>
+        
+        <HBox alignment="CENTER" spacing="0" maxWidth="960" maxHeight="640" HBox.hgrow="SOMETIMES">
+            
+            <!-- LEFT PANEL — Branding -->
+            <VBox styleClass="left-panel" alignment="CENTER" spacing="24"
+                  HBox.hgrow="ALWAYS" maxWidth="480">
+                <padding><Insets top="60" right="60" bottom="60" left="60"/></padding>
 
-        <!-- LEFT PANEL — Branding -->
-        <VBox styleClass="left-panel" alignment="CENTER" spacing="24"
-              prefWidth="440" maxWidth="440">
-            <padding><Insets top="60" right="60" bottom="60" left="60"/></padding>
+                <StackPane styleClass="logo-container">
+                    <Label text="⬡" styleClass="logo-icon"/>
+                </StackPane>
 
-            <StackPane styleClass="logo-container">
-                <Label text="⬡" styleClass="logo-icon"/>
-            </StackPane>
+                <VBox spacing="10" alignment="CENTER_LEFT">
+                    <Label text="FinanceOS"             styleClass="brand-title"/>
+                    <Label text="Smart. Simple. Powerful." styleClass="brand-tagline"/>
+                </VBox>
 
-            <VBox spacing="10" alignment="CENTER_LEFT">
-                <Label text="FinanceOS"             styleClass="brand-title"/>
-                <Label text="Smart. Simple. Powerful." styleClass="brand-tagline"/>
+                <VBox spacing="18" alignment="CENTER_LEFT">
+                    <HBox spacing="14" alignment="CENTER_LEFT">
+                        <Label text="✦" styleClass="feature-bullet"/>
+                        <Label text="Real-time dashboard and analytics" styleClass="feature-text" wrapText="true"/>
+                    </HBox>
+                    <HBox spacing="14" alignment="CENTER_LEFT">
+                        <Label text="✦" styleClass="feature-bullet"/>
+                        <Label text="Smart budget tracking and alerts"  styleClass="feature-text" wrapText="true"/>
+                    </HBox>
+                    <HBox spacing="14" alignment="CENTER_LEFT">
+                        <Label text="✦" styleClass="feature-bullet"/>
+                        <Label text="Secure, encrypted data storage"   styleClass="feature-text" wrapText="true"/>
+                    </HBox>
+                </VBox>
+
+                <HBox spacing="12" alignment="CENTER_LEFT">
+                    <VBox styleClass="stat-card" spacing="4">
+                        <Label text="Revenue tracked" styleClass="stat-label"/>
+                    </VBox>
+                    <VBox styleClass="stat-card" spacing="4">
+                        <Label text="18K+"  styleClass="stat-value"/>
+                        <Label text="Active users"    styleClass="stat-label"/>
+                    </VBox>
+                </HBox>
             </VBox>
 
-            <VBox spacing="18" alignment="CENTER_LEFT">
-                <HBox spacing="14" alignment="CENTER_LEFT">
-                    <Label text="✦" styleClass="feature-bullet"/>
-                    <Label text="Real-time dashboard and analytics" styleClass="feature-text" wrapText="true"/>
+            <!-- RIGHT PANEL — Login Form -->
+            <VBox styleClass="form-card" alignment="TOP_LEFT" spacing="0"
+                  HBox.hgrow="ALWAYS" maxWidth="480">
+                <padding><Insets top="52" right="52" bottom="52" left="52"/></padding>
+
+                <Label text="Welcome back"                          styleClass="form-title"/>
+                <Label text="Sign in to your account to continue"  styleClass="form-subtitle"/>
+
+                <Region prefHeight="36"/>
+
+                <Label text="Email address" styleClass="field-label"/>
+                <Region prefHeight="8"/>
+                <TextField fx:id="emailField" promptText="you@example.com" styleClass="input-field"/>
+
+                <Region prefHeight="22"/>
+
+                <Label text="Password" styleClass="field-label"/>
+                <Region prefHeight="8"/>
+                <PasswordField fx:id="passwordField" promptText="Enter your password" styleClass="input-field"/>
+
+                <Region prefHeight="10"/>
+
+                <HBox alignment="CENTER_LEFT">
+                    <CheckBox fx:id="rememberMe" text="Remember me" styleClass="check-box-custom"/>
+                    <Region HBox.hgrow="ALWAYS"/>
+                    <Hyperlink text="Forgot password?" styleClass="forgot-link" onAction="#handleForgotPassword"/>
                 </HBox>
-                <HBox spacing="14" alignment="CENTER_LEFT">
-                    <Label text="✦" styleClass="feature-bullet"/>
-                    <Label text="Smart budget tracking and alerts"  styleClass="feature-text" wrapText="true"/>
+
+                <Region prefHeight="28"/>
+
+                <Label fx:id="errorLabel" text="" styleClass="error-label"
+                       wrapText="true" visible="false" managed="false"/>
+                <Region fx:id="errorSpacer" prefHeight="0"/>
+
+                <Button fx:id="loginButton" text="Sign In"
+                        styleClass="primary-button" maxWidth="Infinity"
+                        onAction="#handleLogin"/>
+
+                <Region prefHeight="24"/>
+
+                <HBox alignment="CENTER" spacing="12">
+                    <Region HBox.hgrow="ALWAYS" styleClass="divider-line"/>
+                    <Label text="or" styleClass="divider-text"/>
+                    <Region HBox.hgrow="ALWAYS" styleClass="divider-line"/>
                 </HBox>
-                <HBox spacing="14" alignment="CENTER_LEFT">
-                    <Label text="✦" styleClass="feature-bullet"/>
-                    <Label text="Secure, encrypted data storage"   styleClass="feature-text" wrapText="true"/>
+
+                <Region prefHeight="20"/>
+
+                <HBox alignment="CENTER" spacing="6">
+                    <Label text="Don't have an account?" styleClass="switch-text"/>
+                    <Hyperlink text="Create one" styleClass="switch-link" onAction="#handleGoToSignup"/>
                 </HBox>
+
             </VBox>
-
-            <HBox spacing="12" alignment="CENTER_LEFT">
-                <VBox styleClass="stat-card" spacing="4">
-                    <!-- <Label text="$3.1M+" styleClass="stat-value"/> -->
-                    <Label text="Revenue tracked" styleClass="stat-label"/>
-                </VBox>
-                <VBox styleClass="stat-card" spacing="4">
-                    <Label text="18K+"  styleClass="stat-value"/>
-                    <Label text="Active users"    styleClass="stat-label"/>
-                </VBox>
-            </HBox>
-        </VBox>
-
-        <!-- RIGHT PANEL — Login Form -->
-        <VBox styleClass="form-card" alignment="TOP_LEFT" spacing="0"
-              prefWidth="440" maxWidth="440">
-            <padding><Insets top="52" right="52" bottom="52" left="52"/></padding>
-
-            <Label text="Welcome back"                          styleClass="form-title"/>
-            <Label text="Sign in to your account to continue"  styleClass="form-subtitle"/>
-
-            <Region prefHeight="36"/>
-
-            <Label text="Email address" styleClass="field-label"/>
-            <Region prefHeight="8"/>
-            <TextField fx:id="emailField" promptText="you@example.com" styleClass="input-field"/>
-
-            <Region prefHeight="22"/>
-
-            <Label text="Password" styleClass="field-label"/>
-            <Region prefHeight="8"/>
-            <PasswordField fx:id="passwordField" promptText="Enter your password" styleClass="input-field"/>
-
-            <Region prefHeight="10"/>
-
-            <HBox alignment="CENTER_LEFT">
-                <CheckBox fx:id="rememberMe" text="Remember me" styleClass="check-box-custom"/>
-                <Region HBox.hgrow="ALWAYS"/>
-                <Hyperlink text="Forgot password?" styleClass="forgot-link" onAction="#handleForgotPassword"/>
-            </HBox>
-
-            <Region prefHeight="28"/>
-
-            <Label fx:id="errorLabel" text="" styleClass="error-label"
-                   wrapText="true" visible="false" managed="false"/>
-            <Region fx:id="errorSpacer" prefHeight="0"/>
-
-            <Button fx:id="loginButton" text="Sign In"
-                    styleClass="primary-button" maxWidth="Infinity"
-                    onAction="#handleLogin"/>
-
-            <Region prefHeight="24"/>
-
-            <HBox alignment="CENTER" spacing="12">
-                <Region HBox.hgrow="ALWAYS" styleClass="divider-line"/>
-                <Label text="or" styleClass="divider-text"/>
-                <Region HBox.hgrow="ALWAYS" styleClass="divider-line"/>
-            </HBox>
-
-            <Region prefHeight="20"/>
-
-            <HBox alignment="CENTER" spacing="6">
-                <Label text="Don't have an account?" styleClass="switch-text"/>
-                <Hyperlink text="Create one" styleClass="switch-link" onAction="#handleGoToSignup"/>
-            </HBox>
-
-        </VBox>
+        </HBox>
     </HBox>
 </StackPane>
